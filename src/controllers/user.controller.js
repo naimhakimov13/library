@@ -1,0 +1,103 @@
+import User from '../models/User.js'
+import { buildUser, notFound } from '../utils/helper.js'
+import { Types } from 'mongoose'
+
+export const signUp = async (req, res, next) => {
+  try {
+    const sameLogin = await User.findOne({ email: req.body.email })
+
+    if (sameLogin) {
+      return res.status(400).json({
+        message: 'email already exist'
+      })
+    }
+
+    const user = new User({
+      ...req.body
+    })
+
+    const saveUser = await user.save()
+
+    res.status(201).json(buildUser(saveUser))
+  } catch (err) {
+    next(err)
+  }
+}
+
+export const signIn = async (req, res, next) => {
+  try {
+    const { email, password } = req.body
+    const user = await User.findOne({ email }).select('+password')
+    const error = { message: 'email or password incorrect' }
+
+    if (!user) {
+      return res.status(400).send(error)
+    }
+
+    const passwordCompare = await user.validatePassword(password)
+
+    if (!passwordCompare) {
+      return res.status(400).send(error)
+    }
+
+    res.json(buildUser(user))
+  } catch (err) {
+    next(err)
+  }
+}
+
+export const getUsers = async (req, res, next) => {
+  try {
+    const allUsers = await User.find()
+    res.json(allUsers)
+  } catch (err) {
+    next(err)
+  }
+}
+
+export const getUserById = async (req, res, next) => {
+  try {
+    const { id } = req.params
+    const user = Types.ObjectId.isValid(id) && await User.findOne({ _id: id })
+
+    if (!user) {
+      return notFound('user', res)
+    }
+    res.json(user)
+  } catch (err) {
+    next(err)
+  }
+}
+
+export const updateUserById = async (req, res, next) => {
+  try {
+    const user = await User.findOneAndUpdate({
+      _id: req.params.id
+    }, req.body, { new: true })
+
+    if (!user) {
+      return notFound('user', res)
+    }
+
+    res.json(user)
+  } catch (err) {
+    next(err)
+  }
+}
+
+export const deleteUserById = async (req, res, next) => {
+  try {
+    const user = await User.findOneAndDelete({ _id: req.params.id })
+
+    if (!user) {
+      return notFound('user', res)
+    }
+
+    res.status(204).json({ message: 'Successfully removed' })
+  } catch (err) {
+    next(err)
+  }
+}
+
+
+

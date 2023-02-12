@@ -1,0 +1,18 @@
+import { Router } from 'express'
+import categoryRoutes from './category-routes.js'
+import bookRoutes from './book.routes.js'
+import uploadRoutes from './upload.routes.js'
+import authRoutes from './auth-routes.js'
+import userRoutes from './user-routes.js'
+import BorrowingRoutes from './borrowing.routes.js'
+
+const router = Router()
+
+router.use('/categories', categoryRoutes)
+router.use('/books', bookRoutes)
+router.use('/upload', uploadRoutes)
+router.use('/', authRoutes)
+router.use('/users', userRoutes)
+router.use('/borrowing', BorrowingRoutes)
+
+export default router
