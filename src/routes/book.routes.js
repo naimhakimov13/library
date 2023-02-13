@@ -8,7 +8,7 @@ router.get('/', getBooks)
 
 router.get('/:id', getBookById)
 
-router.post('/', [...bookValidation, createBook])
+router.post('/', [bookValidation, createBook])
 
 router.put('/:id', updateBookById)
 

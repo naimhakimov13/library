@@ -2,6 +2,11 @@ import { model, Schema } from 'mongoose'
 
 const schema = new Schema(
   {
+    borrow_id: {
+      type: Schema.Types.ObjectId,
+      ref: 'Borrow',
+      required: true
+    },
     book_id: {
       type: Schema.Types.ObjectId,
       ref: 'Book',
@@ -12,9 +17,10 @@ const schema = new Schema(
       ref: 'User',
       required: true
     },
-    date_borrowed: {
-      type: String,
-      default: new Date().toISOString()
+    status: {
+      type: Number,
+      enum: [0, 1],
+      default: 1
     }
   },
   {
@@ -23,4 +29,4 @@ const schema = new Schema(
   }
 )
 
-export default model('Borrowing', schema)
+export default model('Return', schema)

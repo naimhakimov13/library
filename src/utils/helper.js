@@ -22,9 +22,7 @@ export const buildUser = (user) => {
     user: {
       ...userClone
     },
-    token: jsonwebtoken.sign({
-      ...userClone
-    }, config.get('secret'))
+    token: jsonwebtoken.sign(userClone, config.get('secret'))
   }
 }
 

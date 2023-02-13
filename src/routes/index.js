@@ -4,7 +4,8 @@ import bookRoutes from './book.routes.js'
 import uploadRoutes from './upload.routes.js'
 import authRoutes from './auth-routes.js'
 import userRoutes from './user-routes.js'
-import BorrowingRoutes from './borrowing.routes.js'
+import BorrowingRoutes from './borrow.routes.js'
+import ReturnRoutes from './return.routes.js'
 
 const router = Router()
 
@@ -13,6 +14,7 @@ router.use('/books', bookRoutes)
 router.use('/upload', uploadRoutes)
 router.use('/', authRoutes)
 router.use('/users', userRoutes)
-router.use('/borrowing', BorrowingRoutes)
+router.use('/borrows', BorrowingRoutes)
+router.use('/returns', ReturnRoutes)
 
 export default router
