@@ -13,7 +13,6 @@ export const auth = async (req, res, next, isAdmin = false) => {
   try {
     const decode = verify(token, config.get('secret'))
     req.user = await User.findOne({ _id: decode._id })
-    console.log(isAdmin)
     if (isAdmin && req.user.role === 'admin') {
       return next()
     } else if (isAdmin && req.user.role !== 'admin') {

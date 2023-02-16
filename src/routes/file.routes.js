@@ -1,7 +1,9 @@
 import { Router } from 'express'
 import multer from 'multer'
 
-import { uploadFile } from '../controllers/upload.controller.js'
+import { removeFile, uploadFile } from '../controllers/file.controller.js'
+import { fileValidations } from '../validations/file.validations.js'
+import { admin } from '../middleware/auth.middleware.js'
 
 const router = Router()
 
@@ -25,6 +27,8 @@ const upload = multer({
   })
 })
 
-router.post('/', upload.single('file'), uploadFile)
+router.post('/upload', [admin, upload.single('file'), uploadFile])
+
+router.post('/remove', [fileValidations, admin, removeFile])
 
 export default router

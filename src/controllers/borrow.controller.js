@@ -46,8 +46,11 @@ export const deleteBorrowById = async (req, res, next) => {
 
 export const updateBorrow = async (req, res, next) => {
   try {
-    const result = await Borrowing.findByIdAndUpdate(req.params.id, req.body, { new: true })
-    res.status(result)
+    const result = await Borrowing
+      .findByIdAndUpdate(req.params.id, req.body, { new: true })
+      .populate('user_id')
+      .populate('book_id')
+    res.send(result)
   } catch (err) {
     next(err)
   }

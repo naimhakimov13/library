@@ -1,8 +1,8 @@
 import { check } from 'express-validator'
-import { borrowValidations } from './borrow.validations.js'
+import { borrowValidation } from './borrowValidation.js'
 
 export const returnValidations = [
-    ...borrowValidations,
+    ...borrowValidation,
   check('borrow_id')
     .exists().withMessage('borrow_id is required')
     .isMongoId().withMessage('invalid borrow_id'),

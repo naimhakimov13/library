@@ -1,14 +1,10 @@
 import express from 'express'
 import cors from 'cors'
 import { connect } from 'mongoose'
-import { join, dirname } from 'path'
-import { fileURLToPath } from 'url';
-
+import { join } from 'path'
 import routes from './routes/index.js'
 import { errorHandler } from './middleware/error.middleware.js'
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import { __dirname } from './utils/helper.js'
 
 const app = express()
 const PORT = process.env.PORT ?? 3000

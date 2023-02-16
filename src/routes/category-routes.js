@@ -7,17 +7,19 @@ import {
   updateCategory
 } from '../controllers/category-controller.js'
 import { categoryValidation } from '../validations/category.validation.js'
+import { paramIdValidation } from '../validations/borrowValidation.js'
+import { admin } from '../middleware/auth.middleware.js'
 
 const router = Router()
 
 router.get('/', getCategory)
 
-router.get('/:id', getCategoryById)
+router.get('/:id', [paramIdValidation, getCategoryById])
 
-router.post('/', [...categoryValidation, createCategory])
+router.post('/', [categoryValidation, createCategory])
 
-router.put('/:id', updateCategory)
+router.put('/:id', [paramIdValidation, admin, updateCategory])
 
-router.delete('/:id', deleteCategoryById)
+router.delete('/:id', [paramIdValidation, admin, deleteCategoryById])
 
 export default router
