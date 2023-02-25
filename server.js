@@ -2,9 +2,9 @@ import express from 'express'
 import cors from 'cors'
 import { connect } from 'mongoose'
 import { join } from 'path'
-import routes from './routes/index.js'
-import { errorHandler } from './middleware/error.middleware.js'
-import { __dirname } from './utils/helper.js'
+import routes from './src/routes/index.js'
+import { errorHandler } from './src/middleware/error.middleware.js'
+import { __dirname } from './src/utils/helper.js'
 
 const app = express()
 const PORT = process.env.PORT ?? 3000
