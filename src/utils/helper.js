@@ -28,7 +28,7 @@ export const buildUser = (user) => {
       ...userClone
     },
     token: jsonwebtoken.sign(userClone, config.get('secret'), {
-      expiresIn: '1d'
+      expiresIn: '7d'
     })
   }
 }

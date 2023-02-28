@@ -1,7 +1,7 @@
 import { check } from 'express-validator'
 
 export const fileValidations = [
-  check('name')
+  check('id')
     .exists()
-    .withMessage('name is required')
+    .withMessage('id is required')
 ]
