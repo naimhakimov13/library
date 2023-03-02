@@ -39,8 +39,11 @@ const schema = new Schema({
     default: null
   },
   image: {
-    type: String,
-    default: null
+    public_id: String,
+    url: {
+      type: String,
+      default: null
+    }
   },
   status: {
     type: Number,

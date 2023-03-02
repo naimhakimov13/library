@@ -34,12 +34,18 @@ const schema = new Schema({
     required: true
   },
   image: {
-    type: String,
-    default: null
+    public_id: String,
+    url: {
+      type: String,
+      default: null
+    }
   },
   pdf: {
-    type: String,
-    default: null
+    public_id: String,
+    url: {
+      type: String,
+      default: null
+    }
   },
   status: {
     type: Number,
