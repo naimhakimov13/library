@@ -1,5 +1,5 @@
 import User from '../models/User.js'
-import { buildUser, notFound } from '../utils/helper.js'
+import { buildUser, convertIntObj, normalizeFilter, notFound } from '../utils/helper.js'
 import { Types } from 'mongoose'
 
 export const signUp = async (req, res, next) => {
@@ -48,8 +48,21 @@ export const signIn = async (req, res, next) => {
 
 export const getUsers = async (req, res, next) => {
   try {
-    const allUsers = await User.find()
-    res.json(allUsers)
+    const queryParams = convertIntObj(req.query)
+    const filters = normalizeFilter(queryParams)
+
+    const allUsers = await User.find({ $and: filters })
+      .skip((queryParams.currentPage - 1) * queryParams.pageSize)
+      .limit(queryParams.pageSize)
+
+    const items = await User.count()
+
+    res.json({
+      currentPage: queryParams.currentPage || 0,
+      pageSize: queryParams.pageSize || 10,
+      content: allUsers,
+      items
+    })
   } catch (err) {
     next(err)
   }

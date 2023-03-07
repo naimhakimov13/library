@@ -1,9 +1,23 @@
 import BookModel from '../models/Book.js'
+import { convertIntObj, normalizeFilter } from '../utils/helper.js'
 
 export const getBooks = async (req, res, next) => {
   try {
-    const books = await BookModel.find()
-    res.send(books)
+    const queryParams = convertIntObj(req.query)
+    const filters = normalizeFilter(queryParams)
+
+    const books = await BookModel.find({ $and: filters })
+      .skip((queryParams.currentPage - 1) * queryParams.pageSize)
+      .limit(queryParams.pageSize)
+
+    const items = await BookModel.count()
+
+    res.json({
+      currentPage: queryParams.currentPage || 0,
+      pageSize: queryParams.pageSize || 10,
+      content: books,
+      items
+    })
   } catch (err) {
     next(err)
   }

@@ -38,3 +38,31 @@ export function getRandomInt(min, max) {
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+export const clean = (obj) => {
+  for (let propName in obj) {
+    if (obj[propName] === '' || obj[propName] === null || obj[propName] === undefined) {
+      delete obj[propName]
+    }
+  }
+  return obj
+}
+
+
+export const normalizeFilter = (obj) => {
+  return Object.keys(clean(obj)).map((key) => ({
+    [key]: typeof +obj[key] === 'number' && !isNaN(+obj[key]) ? +obj[key] : new RegExp(obj[key], 'i')
+  }))
+}
+
+export function convertIntObj(obj) {
+ let res = {}
+
+  Object.keys(obj).forEach(key => {
+    res = {
+      [key]: isNaN(+obj[key]) ? obj[key] : +obj[key]
+    }
+  })
+
+  return res
+}
