@@ -1,9 +1,9 @@
 import BookModel from '../models/Book.js'
-import { convertIntObj, normalizeFilter } from '../utils/helper.js'
+import { clean, normalizeFilter } from '../utils/helper.js'
 
 export const getBooks = async (req, res, next) => {
   try {
-    const queryParams = convertIntObj(req.query)
+    const queryParams = clean(req.query)
     const filters = normalizeFilter(queryParams)
 
     const books = await BookModel.find({ $and: filters })

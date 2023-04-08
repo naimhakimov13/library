@@ -14,9 +14,6 @@ export const createReturn = async (req, res, next) => {
   try {
     const body = req.body
 
-    const num = '1 2 3 4'
-    num.split()
-
     const returnData = await Return.findOne({ borrow_id: body.borrow_id })
     const borrowData = await Borrow.findOne({ user_id: body.user_id, book_id: body.book_id })
 
