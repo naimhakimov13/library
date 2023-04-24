@@ -1,5 +1,5 @@
 import BookModel from '../models/Book.js'
-import { clean, normalizeFilter } from '../utils/helper.js'
+import { clean, getRandomInt, normalizeFilter } from '../utils/helper.js'
 
 export const getBooks = async (req, res, next) => {
   try {
@@ -34,16 +34,24 @@ export const getBookById = async (req, res, next) => {
 
 export const createBook = async (req, res, next) => {
   try {
-    const book = await BookModel.create(req.body)
-    res.status(201).send(book)
+    const quantity = +req.body.quantity || 1
+    delete req.body.quantity
+
+    const bookList = Array(quantity).fill('').map((_) => ({
+      ...req.body,
+      barcode: getRandomInt(1_000_000_000, 9_999_999_999)
+    }))
+
+    const books = await BookModel.insertMany(bookList)
+    res.status(201).send(books)
   } catch (err) {
     next(err)
   }
 }
 
-export const updateBookById = async (req, res, next) => {
+export const updateBookByISBN = async (req, res, next) => {
   try {
-    const book = await BookModel.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    const book = await BookModel.updateMany({ isbn: req.params.id }, { $set: req.body })
     res.send(book)
   } catch (err) {
     next(err)

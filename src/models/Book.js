@@ -1,5 +1,4 @@
 import { model, Schema } from 'mongoose'
-import { getRandomInt } from '../utils/helper.js'
 
 const schema = new Schema({
   title: {
@@ -14,11 +13,8 @@ const schema = new Schema({
   lang: {
     type: String,
     required: true,
-    enum: ['ru', 'tj', 'uz', 'en']
-  },
-  quantity: {
-    type: Number,
-    default: 0
+    enum: ['ru', 'tj', 'uz', 'en'],
+    default: 'tj'
   },
   release_year: {
     type: Number,
@@ -49,21 +45,32 @@ const schema = new Schema({
   },
   status: {
     type: Number,
-    enum: [1, 0],
+    enum: [0, 1, 2],
     default: 1
   },
   barcode: {
     type: Number,
     unique: true
+  },
+  price: {
+    type: String,
+    required: true
+  },
+  isbn: {
+    type: String,
+    required: true
+  },
+  cupboard_number: {
+    type: Number,
+    required: true
+  },
+  shelf_number: {
+    type: Number,
+    required: true
   }
 }, {
   timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
   versionKey: false
 })
-
-schema.pre('save', function() {
-  this.barcode = getRandomInt(1_000_000_000, 9_999_999_999)
-})
-
 
 export default model('Book', schema)
