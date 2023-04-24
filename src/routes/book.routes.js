@@ -3,7 +3,8 @@ import {
   createBook,
   getBookById,
   getBooks,
-  updateBookByISBN
+  updateBookByISBN,
+  deleteBookById
 } from '../controllers/book.controller.js'
 import { bookValidation } from '../validations/book.validations.js'
 import { paramIdValidation } from '../validations/borrowValidation.js'
