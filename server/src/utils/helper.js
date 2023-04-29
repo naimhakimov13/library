@@ -1,6 +1,5 @@
 import { validationResult } from 'express-validator'
 import jsonwebtoken from 'jsonwebtoken'
-import config from 'config'
 import { fileURLToPath } from 'url'
 import { dirname } from 'path'
 
@@ -27,7 +26,7 @@ export const buildUser = (user) => {
     user: {
       ...userClone
     },
-    token: jsonwebtoken.sign(userClone, config.get('secret'), {
+    token: jsonwebtoken.sign(userClone, 'super secret', {
       expiresIn: '7d'
     })
   }

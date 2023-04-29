@@ -1,5 +1,4 @@
 import { verify } from 'jsonwebtoken'
-import config from 'config'
 import User from '../models/User.js'
 
 export const auth = async (req, res, next, isAdmin = false) => {
@@ -11,7 +10,7 @@ export const auth = async (req, res, next, isAdmin = false) => {
   const token = req.headers.authorization.split(' ')[1]
 
   try {
-    const decode = verify(token, config.get('secret'))
+    const decode = verify(token, 'super secret')
     req.user = await User.findOne({ _id: decode._id })
 
     if (isAdmin && req.user.role === 'admin') {

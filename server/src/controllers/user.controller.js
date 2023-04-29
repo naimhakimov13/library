@@ -1,5 +1,5 @@
 import User from '../models/User.js'
-import { buildUser, clean, convertIntObj, normalizeFilter, notFound } from '../utils/helper.js'
+import { buildUser, clean, normalizeFilter, notFound } from '../utils/helper.js'
 import { Types } from 'mongoose'
 
 export const signUp = async (req, res, next) => {
@@ -105,7 +105,7 @@ export const deleteUserById = async (req, res, next) => {
       return notFound('user', res)
     }
 
-    res.status(204).json({ message: 'Successfully removed' })
+    res.json({ message: 'Successfully removed' })
   } catch (err) {
     next(err)
   }
