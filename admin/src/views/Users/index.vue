@@ -1,12 +1,12 @@
 <script setup>
-import {onMounted} from "vue";
-import {useRouter} from "vue-router";
+import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 
-import {useUserStore} from "@/stores/userStore";
-import BaseTable from "@/components/ui/BaseTable.vue";
+import { useUserStore } from '@/stores/userStore'
+import BaseTable from '@/components/ui/BaseTable.vue'
 
 const router = useRouter()
-const columns = ['ID', 'Штихкод', 'Имя', 'Email', 'Телефон', 'Пол']
+const columns = ['ID', 'Штихкод', 'Ном', 'Email', 'Телефон', 'Ҷинс']
 
 const userStore = useUserStore()
 
@@ -25,19 +25,19 @@ async function deleteUserById(id) {
 
 <template>
   <div>
-    <div class="flex justify-between">
-      <h1>Пользователи</h1>
-      <BaseButton @click="router.push('/users/create')">Создать пользователя</BaseButton>
+    <div class='flex justify-between'>
+      <h1>{{ $t('menu.users') }}</h1>
+      <BaseButton @click="router.push('/users/create')">{{ $t('user.create') }}</BaseButton>
     </div>
 
 
     <BaseTable
-        :is-show-icon="true"
-        :loading="userStore.isLoading"
-        :columns="columns"
-        :rows="userStore.rows"
-        @edit="editUserById"
-        @delete="deleteUserById"
+      :is-show-icon='true'
+      :loading='userStore.isLoading'
+      :columns='columns'
+      :rows='userStore.rows'
+      @edit='editUserById'
+      @delete='deleteUserById'
     >
     </BaseTable>
   </div>

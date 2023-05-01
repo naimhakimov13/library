@@ -6,9 +6,10 @@ export const getBooks = async (req, res, next) => {
     const queryParams = clean(req.query)
     const filters = normalizeFilter(queryParams)
 
-    const books = await BookModel.find({ $and: filters })
-      .skip((queryParams.currentPage - 1) * queryParams.pageSize)
-      .limit(queryParams.pageSize)
+    const books = await BookModel
+      .distinct('isbn')
+      // .skip((queryParams.currentPage - 1) * queryParams.pageSize)
+      // .limit(queryParams.pageSize)
 
     const items = await BookModel.count()
 

@@ -14,19 +14,20 @@
     "your_email": "Почтаи электронии шумо",
     "your_password": "Пароли шумо",
     "password": "Парол",
-    "remember": "маро дар ёд дор",
+    "remember": "Сабт кардан",
     "sign_in": "Даромадан"
   },
   "table": {
-    "empty_table": "Дар ҷадвал маълумот нест"
+    "empty_table": "Дар ҷадвал маълумот нест",
+    "pol": "ҷинс"
   },
   "category": {
-    "create": "Cохтани категория"
+    "create": "Cохтан"
   },
   "book": {
-    "create": "Cохтани китоб"
+    "create": "Cохтан"
   },
   "user": {
-    "create": "Cохтани корбар"
+    "create": "Cохтан"
   }
 }

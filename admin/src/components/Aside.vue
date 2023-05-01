@@ -3,11 +3,11 @@ import {useRoute} from "vue-router";
 import {ref, watch} from "vue";
 
 const items = [
-  {
-    name: 'menu.main',
-    icon: 'home',
-    link: '/dashboard'
-  },
+  // {
+  //   name: 'menu.main',
+  //   icon: 'home',
+  //   link: '/dashboard'
+  // },
   {
     name: 'menu.users',
     icon: 'users',

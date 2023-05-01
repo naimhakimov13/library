@@ -6,7 +6,7 @@ import {useBookStore} from "@/stores/bookStore";
 import BaseTable from "@/components/ui/BaseTable.vue";
 import BaseButton from "@/components/ui/BaseButton.vue";
 
-const columns = ref(['ID', 'Штрихкод', 'Название', 'Автор', 'Количество страницы', 'Дата', 'Статус'])
+const columns = ref(['ID', 'Штрихкод', 'Ном', 'муаллиф', 'Микдори саҳифа', 'Оғози эътибор', 'Статус'])
 const bookStore = useBookStore()
 const router = useRouter()
 

@@ -3,7 +3,7 @@ import {onMounted, ref} from "vue";
 import BaseTable from "@/components/ui/BaseTable.vue";
 import {useCategoryStore} from "@/stores/categoryStore";
 
-const columns = ref(['ID', 'Название'])
+const columns = ref(['ID', 'Ном'])
 const categoryStore = useCategoryStore()
 
 

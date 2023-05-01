@@ -18,7 +18,7 @@ const form = reactive({
 
 onMounted(() => {
   if (localStorage.getItem('token')) {
-    router.push('/dashboard')
+    router.push('/users')
   }
 })
 
@@ -28,7 +28,7 @@ async function onSubmit() {
     loading.value = true
     await userStore.login(form)
     loading.value = false
-    router.push('/dashboard')
+    await router.push('/users')
   } catch (err) {
     loading.value = false
   }
@@ -80,6 +80,7 @@ async function onSubmit() {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    min-width: 300px;
   }
 
   .btn-primary {

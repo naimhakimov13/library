@@ -18,7 +18,7 @@ export const useBookStore = defineStore('books', () => {
         item.author,
         item.count_page,
         item.release_year,
-        item.status ? '<span class="badge badge-success">В библотеке</span>' : '<span class="badge badge-warning">В руках</span>'
+        item.status ? '<span class="badge badge-success">Дар китобхона</span>' : '<span class="badge badge-warning">Дар даст</span>'
       ]
     }))
   })
