@@ -1,11 +1,12 @@
 <script setup>
-import {onMounted, reactive, ref} from "vue";
-import {useRouter, useRoute} from "vue-router";
+import { onMounted, reactive, ref } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 
 import BaseInput from '@/components/ui/BaseInput.vue'
 import BaseSelect from '@/components/ui/BaseSelect.vue'
-import {getUserById, removeFile, uploadFile} from "@/services/http.service";
-import {useUserStore} from "@/stores/userStore"
+import { getUserById, removeFile, uploadFile } from '@/services/http.service'
+import { useUserStore } from '@/stores/userStore'
+import { FILE_URL } from '@/utils/url.js'
 
 const router = useRouter()
 const route = useRoute()
@@ -21,7 +22,7 @@ const user = reactive({
   image: null,
   phone: null,
   role: null,
-  password: null,
+  password: null
 })
 
 onMounted(async () => {
@@ -73,60 +74,62 @@ async function deleteFile(id) {
   <div>
     <h1>{{ (userId ? 'Редактировать' : 'Создать') + ' пользавителя' }}</h1>
 
-    <form class="user-form" @submit.prevent="onSubmit">
+    <form class='user-form' @submit.prevent='onSubmit'>
       <BaseInput
-          placeholder="Email"
-          label="Email"
-          v-model="user.email"/>
+        placeholder='Email'
+        label='Email'
+        v-model='user.email' />
 
       <BaseInput
-          placeholder="Имя"
-          label="Имя"
-          v-model="user.name"/>
+        placeholder='Имя'
+        label='Имя'
+        v-model='user.name' />
 
       <BaseInput
-          placeholder="Пароль"
-          label="Пароль"
-          v-model="user.password"/>
+        placeholder='Пароль'
+        label='Пароль'
+        v-model='user.password' />
 
       <BaseInput
-          placeholder="Адрес"
-          label="Адрес"
-          v-model="user.address"/>
+        placeholder='Адрес'
+        label='Адрес'
+        v-model='user.address' />
 
       <BaseInput
-          label="Номер телефона"
-          placeholder="Номер телефона"
-          v-model="user.phone"/>
+        label='Номер телефона'
+        placeholder='Номер телефона'
+        v-model='user.phone' />
 
 
       <BaseSelect
-          label="Роль"
-          v-model="user.role"
-          :options="['admin', 'student', 'teacher']"/>
+        label='Роль'
+        v-model='user.role'
+        :options="['admin', 'student', 'teacher']" />
 
       <BaseSelect
-          label="Пол"
-          v-model="user.gender"
-          :options="['male', 'female']"/>
+        label='Пол'
+        v-model='user.gender'
+        :options="['male', 'female']" />
 
-      <div class="form-control__file">
+      <div class='form-control__file'>
         <BaseInput
-            type="file"
-            label="Фото"
-            @change="inputChange"
+          type='file'
+          label='Фото'
+          @change='inputChange'
         />
 
-        <div v-if="user.image?.url" class="form-control__file-image">
-          <img :src="user.image?.url" alt="">
+        <div v-if='user.image' class='form-control__file-image'>
+          <a :href='FILE_URL + user.image'>
+            <img :src='FILE_URL + user.image' alt=''>
+          </a>
 
-          <div class="form-control__file-close" @click="deleteFile(user.image.public_id)">&times;</div>
+          <div class='form-control__file-close' @click='deleteFile(user.image)'>&times;</div>
         </div>
       </div>
 
       <BaseButton
-          :loading="loading"
-          type="submit">
+        :loading='loading'
+        type='submit'>
         {{ userId ? 'Обновить' : 'Создать' }}
       </BaseButton>
 
@@ -134,7 +137,7 @@ async function deleteFile(id) {
   </div>
 </template>
 
-<style lang="scss">
+<style lang='scss'>
 .user-form {
   margin-top: 30px;
   max-width: 500px;

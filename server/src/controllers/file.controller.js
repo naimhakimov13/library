@@ -1,29 +1,14 @@
-import { v2 as cloudinary } from 'cloudinary'
+import fs from 'fs/promises'
+import { join, dirname } from 'path'
+import { fileURLToPath } from 'url'
 
-cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_KEY,
-  api_secret: process.env.API_SECRET,
-  secure: true
-});
+const __filename = fileURLToPath(import.meta.url);
 
-export const uploadStream = (fileStream, name) => {
-  return new Promise((resolve, reject) => {
-    return cloudinary.uploader.upload_stream({ public_id: name }, (error, result) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(result);
-      }
-    }).end(fileStream)
-  })
-};
-
+const __dirname = dirname(__filename);
 
 export const uploadFile = async (req, res, next) => {
   try {
-    const data = await uploadStream(req.file.buffer)
-    res.send({ public_id: data.public_id, url: data.url })
+    res.send(req.file?.path)
   } catch (err) {
     next(err)
   }
@@ -31,8 +16,8 @@ export const uploadFile = async (req, res, next) => {
 
 export const removeFile = async (req, res, next) => {
   try {
-    await cloudinary.uploader.destroy(req.body.public_id)
-    res.send('Successfully removed')
+    await fs.unlink(join(__dirname, '../../..', req.body.url))
+    res.send({ message: 'Successfully removed' })
   } catch (err) {
     next(err)
   }

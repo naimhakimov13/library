@@ -13,23 +13,21 @@ export const useBookStore = defineStore('books', () => {
     return books.value.content.map(item => ({
       cells: [
         item._id,
-        item.barcode,
+        item.category_id.name,
         item.title,
         item.author,
         item.count_page,
         item.release_year,
-        item.status ? '<span class="badge badge-success">Дар китобхона</span>' : '<span class="badge badge-warning">Дар даст</span>'
+        item.quantity
       ]
     }))
   })
 
   async function get() {
     try {
-      if (!books.value.content.length) {
-        isLoading.value = true
-        books.value = await getBooks()
-        isLoading.value = false
-      }
+      isLoading.value = true
+      books.value = await getBooks()
+      isLoading.value = false
     } catch (err) {
       isLoading.value = false
       throw err

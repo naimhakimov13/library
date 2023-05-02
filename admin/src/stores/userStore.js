@@ -13,7 +13,6 @@ export const useUserStore = defineStore('user', () => {
     return users.value.content.map(item => ({
       cells: [
         item._id,
-        item.barcode,
         item.name,
         item.email,
         item.phone,

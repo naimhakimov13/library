@@ -6,7 +6,7 @@ import {useBookStore} from "@/stores/bookStore";
 import BaseTable from "@/components/ui/BaseTable.vue";
 import BaseButton from "@/components/ui/BaseButton.vue";
 
-const columns = ref(['ID', 'Штрихкод', 'Ном', 'муаллиф', 'Микдори саҳифа', 'Оғози эътибор', 'Статус'])
+const columns = ref(['ID', 'Категория', 'Ном', 'муаллиф', 'Микдори саҳифа', 'Оғози эътибор', 'Микдор'])
 const bookStore = useBookStore()
 const router = useRouter()
 
@@ -21,15 +21,15 @@ async function deleteBook(id) {
 function editBook(id) {
   router.push('/books/edit/' + id)
 }
-
 </script>
-
 
 <template>
   <div>
     <div class="flex justify-between">
       <h1 class="page__title">{{ $t('menu.book') }}</h1>
-      <BaseButton color="primary" @click="router.push('/books/create')">{{ $t('book.create') }}</BaseButton>
+      <BaseButton color="primary" @click="router.push('/books/create')">
+        {{ $t('book.create') }}
+      </BaseButton>
     </div>
     <BaseTable
         :is-show-icon="true"

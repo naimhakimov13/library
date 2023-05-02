@@ -50,6 +50,10 @@ const props = defineProps({
     background: var(--primary);
   }
 
+  &-danger {
+    background: var(--red);
+  }
+
   &:disabled {
     opacity: .8;
   }

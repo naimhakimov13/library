@@ -30,18 +30,16 @@ const schema = new Schema({
     required: true
   },
   image: {
-    public_id: String,
-    url: {
-      type: String,
-      default: null
-    }
+    type: String,
+    default: null
+  },
+  quantity: {
+    type: Number,
+    default: 1
   },
   pdf: {
-    public_id: String,
-    url: {
-      type: String,
-      default: null
-    }
+    type: String,
+    default: null
   },
   status: {
     type: Number,
@@ -58,14 +56,6 @@ const schema = new Schema({
   },
   isbn: {
     type: String,
-    required: true
-  },
-  cupboard_number: {
-    type: Number,
-    required: true
-  },
-  shelf_number: {
-    type: Number,
     required: true
   }
 }, {

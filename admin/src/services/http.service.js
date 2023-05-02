@@ -26,8 +26,8 @@ export function deleteUser(id) {
 
 //BOOK
 
-export function getBooks() {
-  return HTTP.get('/books')
+export function getBooks(params) {
+  return HTTP.get('/books', {params})
 }
 
 export function getBookById(id) {
@@ -125,8 +125,8 @@ export function uploadFile(file) {
   })
 }
 
-export function removeFile(public_id) {
+export function removeFile(url) {
   return HTTP.post('/file/remove', {
-    public_id
+    url
   })
 }

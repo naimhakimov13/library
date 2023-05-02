@@ -16,6 +16,9 @@ const props = defineProps({
   },
   showButton: {
     default: false
+  },
+  showEmpty: {
+    default: true
   }
 })
 
@@ -55,7 +58,7 @@ defineEmits({
 
     <Loader v-if="loading"/>
 
-    <p v-if="!rows.length && !loading" class="text-center">{{ $t('table.empty_table') }}</p>
+    <p v-if="!rows.length && !loading && showEmpty" class="text-center">{{ $t('table.empty_table') }}</p>
   </div>
 </template>
 

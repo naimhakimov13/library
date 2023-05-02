@@ -6,7 +6,7 @@ import { useUserStore } from '@/stores/userStore'
 import BaseTable from '@/components/ui/BaseTable.vue'
 
 const router = useRouter()
-const columns = ['ID', 'Штихкод', 'Ном', 'Email', 'Телефон', 'Ҷинс']
+const columns = ['ID', 'Ном', 'Email', 'Телефон', 'Ҷинс']
 
 const userStore = useUserStore()
 

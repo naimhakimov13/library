@@ -27,9 +27,24 @@
     &-image {
       position: relative;
       width: max-content;
+
+      &.pdf {
+        position: relative;
+        width: 70px;
+        height: 70px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+
+        a {
+          text-decoration: none;
+        }
+      }
     }
 
-    img  {
+    img {
       width: 70px;
       height: 70px;
       border-radius: 8px;

@@ -14,11 +14,12 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use('/api', routes)
 app.use(errorHandler)
-app.use('/uploads', express.static(join(__dirname, '../..', 'uploads')))
+
+app.use('/uploads', express.static(join(__dirname, '../../..', 'uploads')))
 
 async function start() {
   try {
-    await connect(process.env.MONGO_URL ?? 'mongodb://localhost:27017/library')
+    await connect('mongodb://localhost:27017/library')
     app.listen(PORT, () =>
       console.log(`Server has been started on port ${PORT}`)
     )

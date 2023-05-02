@@ -1,17 +1,21 @@
 <script setup>
-import {onMounted, reactive, ref, watch} from "vue"
-import {useRoute, useRouter} from "vue-router"
+import { onMounted, reactive, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 import BaseInput from '@/components/ui/BaseInput.vue'
 import BaseSelect from '@/components/ui/BaseSelect.vue'
-import {getBookById, removeFile, uploadFile} from "@/services/http.service"
-import {useCategoryStore} from "@/stores/categoryStore"
-import {useBookStore} from "@/stores/bookStore"
+import { getBookById, removeFile, uploadFile } from '@/services/http.service'
+import { useCategoryStore } from '@/stores/categoryStore'
+import { useBookStore } from '@/stores/bookStore'
+import { FILE_URL } from '@/utils/url.js'
+
 const route = useRoute()
 const router = useRouter()
 
 const categoryStore = useCategoryStore()
 const bookStore = useBookStore()
+
+const loading = ref(false)
 
 let formBook = reactive({
   title: null,
@@ -22,14 +26,12 @@ let formBook = reactive({
   release_year: null,
   count_page: null,
   category_id: null,
-  image: {},
-  pdf: {},
+  image: null,
+  pdf: null,
   price: null,
-  isbn: null,
-  cupboard_number: null,
-  shelf_number: null,
+  isbn: null
 })
-const loading = ref(false)
+
 onMounted(async () => {
   await categoryStore.get()
   if (route.params.id) {
@@ -46,13 +48,7 @@ onMounted(async () => {
     formBook.pdf = data.pdf
     formBook.price = data.price
     formBook.isbn = data.isbn
-    formBook.cupboard_number = data.cupboard_number
-    formBook.shelf_number = data.shelf_number
   }
-})
-
-watch(formBook, (value) => {
-  console.log(value)
 })
 
 async function changePhoto(event, type) {
@@ -63,7 +59,7 @@ async function onSubmit() {
   try {
     loading.value = true
     if (route.params.id) {
-      await bookStore.update(formBook.isbn, {
+      await bookStore.update(route.params.id, {
         ...formBook,
         category_id: formBook.category_id
       })
@@ -84,113 +80,101 @@ async function onSubmit() {
 
 async function deleteFile(key, id) {
   await removeFile(id)
-  formBook[key] = {}
+  formBook[key] = null
 }
 </script>
 
 <template>
-  <div class="create">
-    <BaseButton @click="router.back()">Назад</BaseButton>
-    <br/>
-    <br/>
-    <div class="page__title">{{ route.params?.id ? 'Редактировать' : 'Создать' }} книгу</div>
+  <div class='create'>
+    <BaseButton @click='router.back()'>Назад</BaseButton>
+    <br />
+    <br />
+    <div class='page__title'>{{ route.params?.id ? 'Редактировать' : 'Создать' }} книгу</div>
 
-    <form class="create-form" @submit.prevent="onSubmit">
+    <form class='create-form' @submit.prevent='onSubmit'>
       <base-select
-        v-model="formBook.category_id"
-        :options="categoryStore.categoryList"
-        label="Категориый"/>
+        v-model='formBook.category_id'
+        :options='categoryStore.categoryList'
+        label='Категориый' />
 
       <base-input
-          v-model="formBook.title"
-          label="Название"
-          type="text"
-          placeholder="Название"/>
+        v-model='formBook.title'
+        label='Название'
+        type='text'
+        placeholder='Название' />
 
       <base-input
-        v-model="formBook.price"
-        label="Цена"
-        placeholder="Цена"
-        type="number"/>
+        v-model='formBook.price'
+        label='Цена'
+        placeholder='Цена'
+        type='number' />
 
       <base-input
-        :disabled='route.params?.id'
-        v-model="formBook.isbn"
-        label="IBSN"
-        placeholder="IBSN"
-        type="number"/>
+        v-model='formBook.isbn'
+        label='IBSN'
+        placeholder='IBSN'
+        type='number' />
 
       <base-input
-        v-model="formBook.cupboard_number"
-        label="cupboard_number"
-        placeholder="cupboard_number"
-        type="number"/>
+        v-model='formBook.author'
+        label='Автор'
+        type='text'
+        placeholder='Автор' />
 
       <base-input
-        v-model="formBook.shelf_number"
-        label="shelf_number"
-        placeholder="shelf_number"
-        type="number"/>
+        v-model='formBook.description'
+        label='Описание'
+        type='text'
+        placeholder='Описание' />
 
       <base-input
-          v-model="formBook.author"
-          label="Автор"
-          type="text"
-          placeholder="Автор"/>
+        v-model='formBook.quantity'
+        label='Колиство в библотеке'
+        placeholder='Колиство в библотеке'
+        type='number' />
 
       <base-input
-          v-model="formBook.description"
-          label="Описание"
-          type="text"
-          placeholder="Описание"/>
+        v-model='formBook.release_year'
+        label='Год выпуска'
+        placeholder='Год выпуска'
+        type='number' />
 
       <base-input
-          v-model="formBook.quantity"
-          label="Колиство в библотеке"
-          placeholder="Колиство в библотеке"
-          type="number"/>
+        v-model='formBook.count_page'
+        label='Количество страниц'
+        placeholder='Количество страниц'
+        type='number' />
 
-      <base-input
-          v-model="formBook.release_year"
-          label="Год выпуска"
-          placeholder="Год выпуска"
-          type="number"/>
+      <div class='form-control__file'>
+        <base-input @change="changePhoto($event,'image')" label='Фото' type='file' />
 
-      <base-input
-          v-model="formBook.count_page"
-          label="Количество страниц"
-          placeholder="Количество страниц"
-          type="number"/>
-
-      <div class="form-control__file">
-        <base-input @change="changePhoto($event,'image')" label="Фото" type="file"/>
-
-        <div v-if="formBook.image?.url" class="form-control__file-image">
-          <a :href="formBook.image?.url" target="_blank">
-            <img :src="formBook.image?.url" alt="">
+        <div v-if='formBook.image' class='form-control__file-image'>
+          <a :href='FILE_URL + formBook.image' target='_blank'>
+            <img :src='FILE_URL + formBook.image' alt=''>
           </a>
 
-          <div class="form-control__file-close" @click="deleteFile('image' ,formBook.image.public_id)">&times;</div>
+          <div class='form-control__file-close' @click="deleteFile('image', formBook.image)">&times;</div>
         </div>
       </div>
 
-      <div class="form-control__file">
-        <base-input @change="changePhoto($event, 'pdf')" label="Pdf" type="file"/>
+      <div class='form-control__file'>
+        <base-input @change="changePhoto($event, 'pdf')" label='Pdf' type='file' />
 
-        <div v-if="formBook.pdf?.url" class="form-control__file-image">
-          <a :href="formBook.pdf?.url" target="_blank"><img :src="formBook.pdf?.url" alt=""></a>
-
-          <div class="form-control__file-close" @click="deleteFile('pdf', formBook.pdf.public_id)">&times;</div>
+        <div v-if='formBook?.pdf' class='form-control__file-image pdf'>
+          <a :href='FILE_URL + formBook?.pdf' target='_blank'>PDF</a>
+          <div class='form-control__file-close' @click="deleteFile('pdf', formBook.pdf)">&times;</div>
         </div>
       </div>
 
-      <base-button :loading="loading" type="submit">{{ route.params?.id ? 'Обновить' : 'Сохранить' }}</base-button>
+      <base-button :loading='loading' type='submit'>
+        {{ route.params?.id ? 'Обновить' : 'Сохранить' }}
+      </base-button>
 
     </form>
   </div>
 </template>
 
-<style lang="scss">
+<style lang='scss'>
 .create {
   &-form {
     margin-top: 20px;

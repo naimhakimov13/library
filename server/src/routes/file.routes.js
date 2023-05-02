@@ -2,35 +2,32 @@ import { Router } from 'express'
 import multer from 'multer'
 
 import { removeFile, uploadFile } from '../controllers/file.controller.js'
-import { fileValidations } from '../validations/file.validations.js'
-import { admin } from '../middleware/auth.middleware.js'
 
 const router = Router()
-const storage = multer.memoryStorage({})
-
 
 const upload = multer({
-
-  storage: storage,
-  //limiting file size by 5Mb
-  limits: { fileSize: 5 * 1024 * 1024 },
-  //accepting only jpg jpeg png files
-  fileFilter: function(req, file, cb) {
-    const fileRegex = new RegExp('\.(jpg|jpeg|png|pdf|docx|doc)$')
-    const fileName = file.originalname
-
-    if (!fileName.match(fileRegex)) {
-      //throw exception
-      return cb(new Error('Invalid file type'))
+  limits: {
+    // 10mb - maximum
+    fileSize: 10 * 1024 * 1024
+  },
+  fileFilter(req, file, cb) {
+    if (!file.originalname.match(/\.(jpg|jpeg|png|docx|doc|pdf)$/)) {
+      return cb(new Error('Please upload a valid file'))
     }
-    //pass the file
-    cb(null, true)
-  }
+    cb(undefined, true)
+  },
+  storage: multer.diskStorage({
+    destination: 'uploads/',
+    filename(req, file, callback) {
+      const extension = file.mimetype.split('/')[1]
+      const fileName = (new Date().getTime() / 1000 | 0) + '.' + extension
+      callback(null, fileName)
+    }
+  })
 })
-
 
 router.post('/upload', [upload.single('file'), uploadFile])
 
-router.post('/remove', [fileValidations, removeFile])
+router.post('/remove', [removeFile])
 
 export default router
