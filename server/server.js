@@ -5,6 +5,7 @@ import { join } from 'path'
 import routes from './src/routes/index.js'
 import { errorHandler } from './src/middleware/error.middleware.js'
 import { __dirname } from './src/utils/helper.js'
+import { initialUser } from './src/initialDataBase.js'
 
 const app = express()
 const PORT = process.env.PORT ?? 3000
@@ -19,10 +20,11 @@ app.use('/uploads', express.static(join(__dirname, '../../..', 'uploads')))
 
 async function start() {
   try {
-    await connect('mongodb://localhost:27017/library')
-    app.listen(PORT, () =>
+    await connect('mongodb://localhost:27017/library1')
+    app.listen(PORT, async () => {
       console.log(`Server has been started on port ${PORT}`)
-    )
+      await initialUser()
+    })
   } catch (e) {
     process.exit(1)
   }
