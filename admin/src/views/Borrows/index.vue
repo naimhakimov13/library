@@ -1,9 +1,12 @@
 <script setup>
 import { computed, reactive, ref } from 'vue'
-import { getBooks, getReturnByUserId, getUsers } from '@/services/http.service'
+import { useRouter } from 'vue-router'
+
+import { createBorrow, getBooks, getUsers } from '@/services/http.service'
 import BaseInput from '@/components/ui/BaseInput.vue'
 import BaseTable from '@/components/ui/BaseTable.vue'
 import BaseButton from '@/components/ui/BaseButton.vue'
+import { toast } from '@/plugins/toast'
 
 const filterForm = reactive({ email: '', name: '' })
 const filterBook = reactive({ title: '', author: '' })
@@ -12,6 +15,7 @@ const users = ref({ content: [] })
 const showButton = ref(true)
 const isShowBookSearch = ref(false)
 const books = ref([])
+const router = useRouter()
 
 async function search() {
   loading.value = showButton.value = true
@@ -41,7 +45,7 @@ const bookData = computed(() => books.value.map(item => ({
   ]
 })))
 
-const columns = ['ID', 'Имя', 'Email', 'Телефон', 'Пол']
+const columns = ['ID', 'Имя', 'Email', 'Телефон', 'Чинс']
 const bookColumns = ['ID', 'Категория', 'Ном', 'муаллиф', 'Микдори саҳифа', 'Оғози эътибор', 'Микдор']
 
 async function chooseUser(event) {
@@ -57,14 +61,22 @@ async function searchBook() {
 
 function clearFilterBook() {
   isShowBookSearch.value = false
+  books.value = []
 }
 
 function clearFilter() {
-  users.value.content = []
+  users.value = []
 }
 
-function chooseBook(event) {
-  console.log('choose book', event)
+async function chooseBook(book_id) {
+  try {
+    await createBorrow({ user_id: users.value.content[0]._id, book_id })
+    clearFilterBook()
+    clearFilter()
+    await toast.success('Сохта шуд')
+  } catch (e) {
+    throw e
+  }
 }
 </script>
 
@@ -76,7 +88,9 @@ function chooseBook(event) {
       <BaseInput v-model='filterForm.email' placeholder='Email' @keyup.enter='search' />
       <BaseInput v-model='filterForm.name' placeholder='Ном' @keyup.enter='search' />
       <BaseButton @click='search'>Чустучуи донишчу</BaseButton>
-      <BaseButton v-if='filterForm.email || filterForm.name' @click='clearFilter' color='danger'>Тоза кардани филтр
+      <BaseButton
+        v-if='filterForm.email || filterForm.name'
+        @click='clearFilter' color='danger'>Тоза кардани филтр
       </BaseButton>
     </div>
 
@@ -105,13 +119,13 @@ function chooseBook(event) {
     </div>
 
 
-        <BaseTable
-          :showEmpty='false'
-          :show-button='true'
-          :columns='bookColumns'
-          :rows='bookData'
-          @edit='chooseBook($event)'
-        ></BaseTable>
+    <BaseTable
+      :showEmpty='false'
+      :show-button='true'
+      :columns='bookColumns'
+      :rows='bookData'
+      @edit='chooseBook($event)'
+    ></BaseTable>
 
   </div>
 </template>
@@ -121,7 +135,7 @@ function chooseBook(event) {
   margin-top: 20px;
 }
 
-:deep(.page__title) {
+::v-deep(.page__title) {
   margin-bottom: 20px;
 }
 </style>

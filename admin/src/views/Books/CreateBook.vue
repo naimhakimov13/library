@@ -89,24 +89,24 @@ async function deleteFile(key, id) {
     <BaseButton @click='router.back()'>Назад</BaseButton>
     <br />
     <br />
-    <div class='page__title'>{{ route.params?.id ? 'Редактировать' : 'Создать' }} книгу</div>
+    <div class='page__title'>{{ route.params?.id ? 'Дохил кардани китоб' : 'Сохтани' }} китоб</div>
 
     <form class='create-form' @submit.prevent='onSubmit'>
       <base-select
         v-model='formBook.category_id'
         :options='categoryStore.categoryList'
-        label='Категориый' />
+        label='Категория' />
 
       <base-input
         v-model='formBook.title'
-        label='Название'
+        label='Ном'
         type='text'
-        placeholder='Название' />
+        placeholder='Ном' />
 
       <base-input
         v-model='formBook.price'
-        label='Цена'
-        placeholder='Цена'
+        label='Нарх'
+        placeholder='Нарх'
         type='number' />
 
       <base-input
@@ -117,36 +117,36 @@ async function deleteFile(key, id) {
 
       <base-input
         v-model='formBook.author'
-        label='Автор'
+        label='Муаллиф'
         type='text'
-        placeholder='Автор' />
+        placeholder='Муаллиф' />
 
       <base-input
         v-model='formBook.description'
-        label='Описание'
+        label='Тавсиф'
         type='text'
-        placeholder='Описание' />
+        placeholder='Тавсиф' />
 
       <base-input
         v-model='formBook.quantity'
-        label='Колиство в библотеке'
-        placeholder='Колиство в библотеке'
+        label='Микдор'
+        placeholder='Микдор'
         type='number' />
 
       <base-input
         v-model='formBook.release_year'
-        label='Год выпуска'
-        placeholder='Год выпуска'
+        label='Соли нашр'
+        placeholder='Соли нашр'
         type='number' />
 
       <base-input
         v-model='formBook.count_page'
-        label='Количество страниц'
-        placeholder='Количество страниц'
+        label='микдори сахифа'
+        placeholder='микдори сахифа'
         type='number' />
 
       <div class='form-control__file'>
-        <base-input @change="changePhoto($event,'image')" label='Фото' type='file' />
+        <base-input @change="changePhoto($event,'image')" label='Сурат' type='file' />
 
         <div v-if='formBook.image' class='form-control__file-image'>
           <a :href='FILE_URL + formBook.image' target='_blank'>
@@ -167,7 +167,7 @@ async function deleteFile(key, id) {
       </div>
 
       <base-button :loading='loading' type='submit'>
-        {{ route.params?.id ? 'Обновить' : 'Сохранить' }}
+        {{ route.params?.id ? 'Даровардан' : 'Сохтан' }}
       </base-button>
 
     </form>

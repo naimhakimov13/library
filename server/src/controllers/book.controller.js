@@ -4,7 +4,6 @@ import { clean, normalizeFilter } from '../utils/helper.js'
 export const getBooks = async (req, res, next) => {
   try {
     const queryParams = clean(req.query)
-    console.log(queryParams)
     const filters = normalizeFilter(queryParams)
 
     const books = await BookModel.find({ $and: filters })

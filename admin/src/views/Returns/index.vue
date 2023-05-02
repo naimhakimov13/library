@@ -1,19 +1,29 @@
 <script setup>
-import {computed, markRaw, ref} from "vue";
-import {getReturnByUserId, getUsers} from "@/services/http.service";
+import { computed, ref } from 'vue'
+import { deleteBorrow, getBorrowByUserId, getUsers } from '@/services/http.service'
 import BaseInput from '@/components/ui/BaseInput.vue'
-import BaseTable from "@/components/ui/BaseTable.vue";
+import BaseTable from '@/components/ui/BaseTable.vue'
+
+const returnColumns = ['ID', 'Ном']
 
 const loading = ref(false)
-const users = ref({content: []})
+const users = ref({ content: [] })
 const showButton = ref(true)
+const returns = ref([])
 
 async function changeHandler(event) {
   const inputValue = event.target.value
   loading.value = showButton.value = true
-  users.value = await getUsers({email: inputValue})
+  users.value = await getUsers({ email: inputValue })
   loading.value = false
 }
+
+const returnData = computed(() => returns.value.map(item => ({
+  cells: [
+    item._id,
+    item.book_id.title
+  ]
+})))
 
 const userData = computed(() => users.value.content.map(item => ({
   cells: [
@@ -26,37 +36,63 @@ const userData = computed(() => users.value.content.map(item => ({
   ]
 })))
 
-const columns = ['ID', 'Штихкод', 'Имя', 'Email', 'Телефон', 'Пол']
+const columns = ['ID', 'Штихкод', 'Имя', 'Email', 'Телефон', 'Чинс']
 
 async function chooseUser(event) {
-  users.value.content = users.value.content.filter(user => user._id === event)
-  showButton.value = false
-  const returns = await getReturnByUserId(event)
-  console.log(returns)
+  if (event) {
+    users.value.content = users.value.content.filter(user => user._id === event)
+    showButton.value = false
+    returns.value = await getBorrowByUserId(event)
+  }
 }
 
+async function removeBorrow(id) {
+  try {
+    await deleteBorrow(id)
+    returns.value = returns.value.filter(item => item._id !== id)
+  } catch (e) {
+    throw e
+  }
+}
 </script>
 
 <template>
   <div>
-    <h1 class="page__title">{{ $t('menu.return') }}</h1>
+    <h1 class='page__title'>{{ $t('menu.return') }}</h1>
 
-    <BaseInput placeholder="Поиск пользователя по email" @keyup.enter="changeHandler($event)"/>
+    <BaseInput placeholder='Поиск пользователя по email' @keyup.enter='changeHandler($event)' />
 
-    <Loader v-if="loading"/>
+    <Loader v-if='loading' />
 
 
     <BaseTable
-        :show-button="showButton"
-        :columns="columns"
-        :rows="userData"
-        @edit="chooseUser($event)"
+      :showEmpty='false'
+      :show-button='showButton'
+      :columns='columns'
+      :rows='userData'
+      @edit='chooseUser($event)'
+    ></BaseTable>
+
+    <hr>
+
+    <BaseTable
+      :showEmpty='false'
+      :columns='returnColumns'
+      :rows='returnData'
+      :isShowIcon='true'
+      @delete='removeBorrow($event)'
     ></BaseTable>
   </div>
 </template>
 
-<style scoped lang="scss">
-:deep(.page__title) {
+<style scoped lang='scss'>
+::v-deep(.page__title) {
   margin-bottom: 20px;
+}
+
+::v-deep {
+  .icon-edit {
+    display: none;
+  }
 }
 </style>
