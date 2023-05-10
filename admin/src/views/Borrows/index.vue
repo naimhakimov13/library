@@ -3,10 +3,10 @@ import { computed, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { createBorrow, getBooks, getUsers } from '@/services/http.service'
+import { toast } from '@/plugins/toast'
 import BaseInput from '@/components/ui/BaseInput.vue'
 import BaseTable from '@/components/ui/BaseTable.vue'
 import BaseButton from '@/components/ui/BaseButton.vue'
-import { toast } from '@/plugins/toast'
 
 const filterForm = reactive({ email: '', name: '' })
 const filterBook = reactive({ title: '', author: '' })
@@ -18,9 +18,13 @@ const books = ref([])
 const router = useRouter()
 
 async function search() {
-  loading.value = showButton.value = true
-  users.value = await getUsers(filterForm)
-  loading.value = false
+  try {
+    loading.value = showButton.value = true
+    users.value = await getUsers(filterForm)
+    loading.value = false
+  } catch (e) {
+    throw e
+  }
 }
 
 const userData = computed(() => users.value.content.map(item => ({
@@ -48,15 +52,19 @@ const bookData = computed(() => books.value.map(item => ({
 const columns = ['ID', 'Имя', 'Email', 'Телефон', 'Чинс']
 const bookColumns = ['ID', 'Категория', 'Ном', 'муаллиф', 'Микдори саҳифа', 'Оғози эътибор', 'Микдор']
 
-async function chooseUser(event) {
+function chooseUser(event) {
   users.value.content = users.value.content.filter(user => user._id === event)
   showButton.value = false
   isShowBookSearch.value = true
 }
 
 async function searchBook() {
-  const bookList = await getBooks(filterBook)
-  books.value = bookList.content
+  try {
+    const bookList = await getBooks(filterBook)
+    books.value = bookList.content
+  } catch (e) {
+    throw e
+  }
 }
 
 function clearFilterBook() {

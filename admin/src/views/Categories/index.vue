@@ -8,11 +8,20 @@ const categoryStore = useCategoryStore()
 
 
 onMounted(async () => {
-  await categoryStore.get()
+  try {
+    await categoryStore.get()
+
+  } catch (e) {
+    throw e
+  }
 })
 
-async function deleteBook(id) {
-  await categoryStore.remove(id)
+async function deleteCategory(id) {
+  try {
+    await categoryStore.remove(id)
+  } catch (e) {
+    throw e
+  }
 }
 
 </script>
@@ -28,7 +37,7 @@ async function deleteBook(id) {
         :columns="columns"
         :rows="categoryStore.rows"
         :loading="categoryStore.isLoading"
-        @delete="deleteBook"
+        @delete="deleteCategory"
         @edit="$router.push('/category/edit/' + $event)"
     />
   </div>

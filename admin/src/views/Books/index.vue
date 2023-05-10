@@ -11,11 +11,19 @@ const bookStore = useBookStore()
 const router = useRouter()
 
 onMounted(async () => {
-  await bookStore.get()
+  try {
+    await bookStore.get()
+  } catch (e) {
+    throw e
+  }
 })
 
 async function deleteBook(id) {
-  await bookStore.remove(id)
+  try {
+    await bookStore.remove(id)
+  } catch (e) {
+    throw e
+  }
 }
 
 function editBook(id) {
