@@ -4,13 +4,11 @@ import { useRouter, useRoute } from 'vue-router'
 
 import BaseInput from '@/components/ui/BaseInput.vue'
 import BaseSelect from '@/components/ui/BaseSelect.vue'
-import { getUserById, removeFile, uploadFile } from '@/services/http.service'
-import { useUserStore } from '@/stores/userStore'
+import { getUserById, removeFile, signUp, updateUser, uploadFile } from '@/services/http.service'
 import { FILE_URL } from '@/utils/url.js'
 
 const router = useRouter()
 const route = useRoute()
-const userStore = useUserStore()
 const userId = route.params.id
 const loading = ref(false)
 
@@ -47,9 +45,9 @@ async function onSubmit() {
     loading.value = true
     if (userId) {
       delete user.password
-      await userStore.update(userId, user)
+      await updateUser(userId, user)
     } else {
-      await userStore.create(user)
+      await signUp(user)
     }
     loading.value = false
     await router.push('/users')

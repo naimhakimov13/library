@@ -1,13 +1,12 @@
 <script setup>
 import {onMounted, reactive, ref} from "vue";
 
-import {useUserStore} from "@/stores/userStore";
 import {useRouter} from "vue-router";
 import BaseInput from '@/components/ui/BaseInput.vue'
 import BaseCheckbox from '@/components/ui/BaseCheckbox.vue'
+import { signIn } from '@/services/http.service'
 
 const router = useRouter()
-const userStore = useUserStore()
 
 const loading = ref(false)
 const form = reactive({
@@ -26,7 +25,9 @@ async function onSubmit() {
   try {
     delete form.remember
     loading.value = true
-    await userStore.login(form)
+    const data =  await signIn(form)
+    localStorage.setItem('token', data.token)
+    localStorage.setItem('user', JSON.stringify(data.user))
     loading.value = false
     await router.push('/users')
   } catch (err) {

@@ -3,19 +3,14 @@ import {onMounted, ref} from "vue";
 import {useRouter, useRoute} from "vue-router";
 
 import BaseInput from '@/components/ui/BaseInput.vue'
-import {useCategoryStore} from "@/stores/categoryStore";
-import {getCategoryById} from "@/services/http.service";
+import { createCategory, getCategoryById, updateCategoryById, getCategories } from '@/services/http.service'
 
 const name = ref(null)
 const loading = ref(false)
 const router = useRouter()
 const route = useRoute()
-const categoryStore = useCategoryStore()
 
 onMounted(async () => {
-  if (!categoryStore.categoryList.length) {
-    await categoryStore.get()
-  }
   if (route.params?.id) {
     const category = await getCategoryById(route.params.id)
     name.value = category.name
@@ -26,9 +21,9 @@ async function onSubmit() {
   try {
     loading.value = true
     if (route.params?.id) {
-      await categoryStore.update(route.params.id, name.value)
+      await updateCategoryById(route.params.id, name.value)
     } else {
-      await categoryStore.create({name: name.value})
+      await createCategory({name: name.value})
     }
     loading.value = false
     await router.push('/category')

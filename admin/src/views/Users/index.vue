@@ -1,25 +1,37 @@
 <script setup>
-import { onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
-import { useUserStore } from '@/stores/userStore'
 import BaseTable from '@/components/ui/BaseTable.vue'
+import { getUsers } from '@/services/http.service'
 
 const router = useRouter()
 const columns = ['ID', 'Ном', 'Email', 'Телефон', 'Ҷинс']
+const users = ref([])
 
-const userStore = useUserStore()
+const rows = computed(() => {
+  return users.value.map(item => ({
+    cells: [
+      item._id,
+      item.name,
+      item.email,
+      item.phone,
+      item.gender
+    ]
+  }))
+})
 
 onMounted(async () => {
-  await userStore.get()
+  const data = await getUsers()
+  users.value = data.content
 })
 
 function editUserById(id) {
   router.push(`/users/edit/${id}`)
 }
 
-async function deleteUserById(id) {
-  await userStore.deleteUserById(id)
+async function deleteUser(id) {
+  await deleteUserById(id)
 }
 </script>
 
@@ -33,11 +45,10 @@ async function deleteUserById(id) {
 
     <BaseTable
       :is-show-icon='true'
-      :loading='userStore.isLoading'
       :columns='columns'
-      :rows='userStore.rows'
+      :rows='rows'
       @edit='editUserById'
-      @delete='deleteUserById'
+      @delete='deleteUser'
     >
     </BaseTable>
   </div>

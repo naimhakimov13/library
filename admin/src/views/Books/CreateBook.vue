@@ -4,19 +4,14 @@ import { useRoute, useRouter } from 'vue-router'
 
 import BaseInput from '@/components/ui/BaseInput.vue'
 import BaseSelect from '@/components/ui/BaseSelect.vue'
-import { getBookById, removeFile, uploadFile } from '@/services/http.service'
-import { useCategoryStore } from '@/stores/categoryStore'
-import { useBookStore } from '@/stores/bookStore'
+import { createBook, getBookById, removeFile, updateBookById, uploadFile, getCategories } from '@/services/http.service'
 import { FILE_URL } from '@/utils/url.js'
 
 const route = useRoute()
 const router = useRouter()
 
-const categoryStore = useCategoryStore()
-const bookStore = useBookStore()
-
+const categories = ref([])
 const loading = ref(false)
-
 let formBook = reactive({
   title: null,
   author: null,
@@ -33,7 +28,7 @@ let formBook = reactive({
 })
 
 onMounted(async () => {
-  await categoryStore.get()
+  await getCategoryList()
   if (route.params.id) {
     const data = await getBookById(route.params.id)
     formBook.title = data.title
@@ -51,6 +46,10 @@ onMounted(async () => {
   }
 })
 
+async function getCategoryList() {
+  categories.value = await getCategories()
+}
+
 async function changePhoto(event, type) {
   formBook[type] = await uploadFile(event)
 }
@@ -59,13 +58,13 @@ async function onSubmit() {
   try {
     loading.value = true
     if (route.params.id) {
-      await bookStore.update(route.params.id, {
+      await updateBookById(route.params.id, {
         ...formBook,
         category_id: formBook.category_id
       })
 
     } else {
-      await bookStore.create({
+      await createBook({
         ...formBook,
         category_id: formBook.category_id
       })
@@ -94,7 +93,7 @@ async function deleteFile(key, id) {
     <form class='create-form' @submit.prevent='onSubmit'>
       <base-select
         v-model='formBook.category_id'
-        :options='categoryStore.categoryList'
+        :options='categories'
         label='Категория' />
 
       <base-input

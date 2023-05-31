@@ -1,24 +1,32 @@
 <script setup>
-import {onMounted, ref} from "vue";
-import BaseTable from "@/components/ui/BaseTable.vue";
-import {useCategoryStore} from "@/stores/categoryStore";
+import { computed, onMounted, ref } from 'vue'
+import BaseTable from '@/components/ui/BaseTable.vue'
+import { getCategories, deleteCategory } from '@/services/http.service'
 
 const columns = ref(['ID', 'Ном'])
-const categoryStore = useCategoryStore()
+const categories = ref([])
 
-
-onMounted(async () => {
-  try {
-    await categoryStore.get()
-
-  } catch (e) {
-    throw e
-  }
+const rows = computed(() => {
+  return categories.value.map(item => ({
+    cells: [
+      item._id,
+      item.name
+    ]
+  }))
 })
 
-async function deleteCategory(id) {
+onMounted(() => {
+  getCategoryList()
+})
+
+async function getCategoryList() {
+  categories.value = await getCategories()
+}
+
+async function deleteCategoryById(id) {
   try {
-    await categoryStore.remove(id)
+    await deleteCategory(id)
+    await getCategoryList()
   } catch (e) {
     throw e
   }
@@ -28,17 +36,16 @@ async function deleteCategory(id) {
 
 <template>
   <div>
-    <div class="flex justify-between">
-      <h1 class="page__title">{{ $t('menu.category') }}</h1>
-      <BaseButton @click="$router.push('/category/create')">{{ $t('category.create')}}</BaseButton>
+    <div class='flex justify-between'>
+      <h1 class='page__title'>{{ $t('menu.category') }}</h1>
+      <BaseButton @click="$router.push('/category/create')">{{ $t('category.create') }}</BaseButton>
     </div>
     <BaseTable
-        :is-show-icon="true"
-        :columns="columns"
-        :rows="categoryStore.rows"
-        :loading="categoryStore.isLoading"
-        @delete="deleteCategory"
-        @edit="$router.push('/category/edit/' + $event)"
+      :is-show-icon='true'
+      :columns='columns'
+      :rows='rows'
+      @delete='deleteCategoryById'
+      @edit="$router.push('/category/edit/' + $event)"
     />
   </div>
 </template>

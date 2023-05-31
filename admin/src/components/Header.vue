@@ -1,12 +1,10 @@
 <script setup>
-import { useUserStore } from '@/stores/userStore'
-
-const userStore = useUserStore()
+const user = JSON.parse(localStorage.getItem('user'))
 </script>
 
 <template>
   <header>
-      {{ userStore.user.name }}
+      {{ user.name }}
   </header>
 </template>
 

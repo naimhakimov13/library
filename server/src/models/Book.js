@@ -46,10 +46,6 @@ const schema = new Schema({
     enum: [0, 1, 2],
     default: 1
   },
-  barcode: {
-    type: Number,
-    unique: true
-  },
   price: {
     type: String,
     required: true
