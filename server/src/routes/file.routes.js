@@ -7,8 +7,8 @@ const router = Router()
 
 const upload = multer({
   limits: {
-    // 10mb - maximum
-    fileSize: 10 * 1024 * 1024
+    // 100mb - maximum
+    fileSize: 100 * 1024 * 1024
   },
   fileFilter(req, file, cb) {
     if (!file.originalname.match(/\.(jpg|jpeg|png|docx|doc|pdf)$/)) {
