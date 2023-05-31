@@ -57,7 +57,6 @@ export function getCategoryById(id) {
 }
 
 export function updateCategoryById(id, name) {
-  console.log(name)
   return HTTP.put(`/categories/${id}`, {name})
 }
 

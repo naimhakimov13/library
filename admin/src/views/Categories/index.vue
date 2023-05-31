@@ -23,13 +23,9 @@ async function getCategoryList() {
   categories.value = await getCategories()
 }
 
-async function deleteCategoryById(id) {
-  try {
-    await deleteCategory(id)
-    await getCategoryList()
-  } catch (e) {
-    throw e
-  }
+async function removeCategory(id) {
+  await deleteCategory(id)
+  await getCategoryList()
 }
 
 </script>
@@ -44,7 +40,7 @@ async function deleteCategoryById(id) {
       :is-show-icon='true'
       :columns='columns'
       :rows='rows'
-      @delete='deleteCategoryById'
+      @delete='removeCategory'
       @edit="$router.push('/category/edit/' + $event)"
     />
   </div>
