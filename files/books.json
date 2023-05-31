@@ -1,0 +1,76 @@
+[{
+  "_id": {
+    "$oid": "64775daa573e4631264639af"
+  },
+  "title": "Шоҳнома 1",
+  "author": "Абдулқосими Фирдавсӣ",
+  "description": "",
+  "lang": "ru",
+  "release_year": 2001,
+  "count_page": 200,
+  "category_id": {
+    "$oid": "64776060a7773e389af32e29"
+  },
+  "image": "uploads\\1685542914.jpeg",
+  "quantity": 1,
+  "pdf": "uploads\\1685543262.pdf",
+  "status": 1,
+  "price": "200",
+  "isbn": "234234",
+  "created_at": {
+    "$date": "2023-05-31T14:46:02.811Z"
+  },
+  "updated_at": {
+    "$date": "2023-05-31T14:39:00.048Z"
+  }
+},{
+  "_id": {
+    "$oid": "64775db5573e4631264639b6"
+  },
+  "title": "Ёддоштҳо",
+  "author": "Садриддин Айнӣ",
+  "description": "234",
+  "lang": "ru",
+  "release_year": 3000,
+  "count_page": 1,
+  "category_id": {
+    "$oid": "64776060a7773e389af32e29"
+  },
+  "image": "uploads\\1685542988.jpeg",
+  "quantity": 234,
+  "pdf": "uploads\\1685543237.pdf",
+  "status": 1,
+  "price": "30",
+  "isbn": "234",
+  "created_at": {
+    "$date": "2023-05-31T14:46:13.790Z"
+  },
+  "updated_at": {
+    "$date": "2023-05-31T14:27:19.723Z"
+  }
+},{
+  "_id": {
+    "$oid": "64775dc4573e4631264639bd"
+  },
+  "title": "Бӯстон ва Гулистон",
+  "author": "Саъдии Шерозӣ",
+  "description": "234",
+  "lang": "ru",
+  "release_year": 1863,
+  "count_page": 300,
+  "category_id": {
+    "$oid": "64776060a7773e389af32e29"
+  },
+  "image": "uploads\\1685543088.jpeg",
+  "quantity": 30,
+  "pdf": "uploads\\1685543251.pdf",
+  "status": 1,
+  "price": "50",
+  "isbn": "32423",
+  "created_at": {
+    "$date": "2023-05-31T14:46:28.707Z"
+  },
+  "updated_at": {
+    "$date": "2023-05-31T14:27:33.063Z"
+  }
+}]
