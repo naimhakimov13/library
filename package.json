@@ -5,7 +5,8 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "serve": "concurrently \"nodemon ./server/server.js\" \"vite ./admin\"",
+    "start": "node ./server/server.js",
+    "serve": "vite ./admin",
     "prittier": "npx prettier --write ."
   },
   "keywords": [],
