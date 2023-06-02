@@ -20,7 +20,7 @@ app.use('/uploads', express.static(join(__dirname, '../../..', 'uploads')))
 
 async function start() {
   try {
-    await connect('mongodb://localhost:27017/library')
+    await connect('mongodb+srv://naim:xxgN5hJ0gxdcked8d@cluster0.r7zmmxk.mongodb.net/?retryWrites=true&w=majority')
     app.listen(PORT, async () => {
       console.log(`Server has been started on port ${PORT}`)
       await initialUser()
